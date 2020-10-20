@@ -1,0 +1,92 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "networkInterfaceName": {
+            "value": "tacoprimewindows10"
+        },
+        "networkSecurityGroupName": {
+            "value": "TacoPrimeWindows-nsg"
+        },
+        "networkSecurityGroupRules": {
+            "value": [
+                {
+                    "name": "RDP",
+                    "properties": {
+                        "priority": 300,
+                        "protocol": "TCP",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "3389"
+                    }
+                }
+            ]
+        },
+        "subnetName": {
+            "value": "Taco_Sub"
+        },
+        "virtualNetworkName": {
+            "value": "Taco_Prime_Net"
+        },
+        "addressPrefixes": {
+            "value": [
+                "10.0.0.0/16"
+            ]
+        },
+        "subnets": {
+            "value": [
+                {
+                    "name": "Taco_Sub",
+                    "properties": {
+                        "addressPrefix": "10.0.0.0/24"
+                    }
+                }
+            ]
+        },
+        "publicIpAddressName": {
+            "value": "TacoPrimeWindows-ip"
+        },
+        "publicIpAddressType": {
+            "value": "Dynamic"
+        },
+        "publicIpAddressSku": {
+            "value": "Basic"
+        },
+        "virtualMachineName": {
+            "value": "TacoPrimeWindows"
+        },
+        "virtualMachineComputerName": {
+            "value": "TacoPrimeWindow"
+        },
+        "virtualMachineRG": {
+            "value": "The_Taco_King_3"
+        },
+        "osDiskType": {
+            "value": "Standard_LRS"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_B2s"
+        },
+        "adminUsername": {
+            "value": "morganbs"
+        },
+        "adminPassword": {
+            "reference": {
+                "keyVault": {
+                "id": "/subscriptions/89c00128-c3f6-4d2b-8409-7d73983eaa4d/resourceGroups/The_Taco_King_2/providers/Microsoft.KeyVault/vaults/morganbskeyvault"
+                },
+                "secretName": "WinPrimeServerPass"
+            }
+        },
+
+        "patchMode": {
+            "value": "AutomaticByOS"
+        }
+    }
+}
