@@ -1,0 +1,92 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "networkInterfaceName": {
+            "value": "TP1-NIC"
+        },
+        "networkSecurityGroupName": {
+            "value": "TP1-NSG"
+        },
+        "networkSecurityGroupRules": {
+            "value": [
+                {
+                    "name": "RDP",
+                    "properties": {
+                        "priority": 300,
+                        "protocol": "TCP",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "3389"
+                    }
+                }
+            ]
+        },
+        "subnetName": {
+            "value": "TP1-SUB"
+        },
+        "virtualNetworkName": {
+            "value": "TP1-VNET"
+        },
+        "addressPrefixes": {
+            "value": [
+                "10.0.0.0/16"
+            ]
+        },
+        "subnets": {
+            "value": [
+                {
+                    "name": "TP1-SUB",
+                    "properties": {
+                        "addressPrefix": "10.0.0.0/24"
+                    }
+                }
+            ]
+        },
+        "publicIpAddressName": {
+            "value": "TP1-PUBIP"
+        },
+        "publicIpAddressType": {
+            "value": "Dynamic"
+        },
+        "publicIpAddressSku": {
+            "value": "Basic"
+        },
+        "virtualMachineName": {
+            "value": "TC-PM-01"
+        },
+        "virtualMachineComputerName": {
+            "value": "TC-PM-01"
+        },
+        "virtualMachineRG": {
+            "value": "The_Taco_King_3"
+        },
+        "osDiskType": {
+            "value": "Standard_LRS"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_B2s"
+        },
+        "adminUsername": {
+            "value": "morganbs"
+        },
+        "adminPassword": {
+            "reference": {
+                "keyVault": {
+                "id": "/subscriptions/89c00128-c3f6-4d2b-8409-7d73983eaa4d/resourceGroups/The_Taco_King_2/providers/Microsoft.KeyVault/vaults/morganbskeyvault"
+                },
+                "secretName": "TC-PM-01"
+            }
+        },
+
+        "patchMode": {
+            "value": "AutomaticByOS"
+        }
+    }
+}
