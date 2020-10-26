@@ -21,9 +21,7 @@ function Deploy-TC-PM-01_02
     New-AzResourceGroup -Name $AZRG2 -Location 'eastus' -Tag $tags #Creation of RG2
     New-AzResourceGroupDeployment -ResourceGroupName $AZRG1 -TemplateUri $Template -TemplateParameterUri $Param1 #Deployment of TC-PM-01
     $TCPM1IP = (Get-AzPublicIpAddress -ResourceGroupName $AZRG1).IpAddress #Gets the public IP address of TC-PM-01
-    $TCPM1USER = -join($TCPM1IP,"\morganbs")
-    $TCPM1PASS = (Get-AzKeyVaultSecret -VaultName morganbskeyvault -Name "TC-PM-01").SecretValueText
-    mstsc $TCPM1IP -user $TCPM1USER -password $TCPM1PASS #Starts RDC connection to TC-PM-01
+    mstsc $TCPM1IP  #Starts RDC connection to TC-PM-01
     New-AzResourceGroupDeployment -ResourceGroupName $AZRG2 -TemplateUri $Template -TemplateParameterUri $Param2 #Deployment of TC-PM-02
     $TCPM2IP = (Get-AzPublicIpAddress -ResourceGroupName $AZRG2).IpAddress #Gets the public IP address of TC-PM-02
     mstsc $TCPM2IP  #Starts RDC connection to TC-PM-02
