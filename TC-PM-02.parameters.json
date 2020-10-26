@@ -78,7 +78,7 @@
             "value": "TC-PM-02"
         },
         "virtualMachineRG": {
-            "value": "The_Taco_King_4"
+            "value": ""
         },
         "osDiskType": {
             "value": "Standard_LRS"

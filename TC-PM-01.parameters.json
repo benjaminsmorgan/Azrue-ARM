@@ -77,9 +77,9 @@
         "virtualMachineComputerName": {
             "value": "TC-PM-01"
         },
-        //"virtualMachineRG": {
-        //    "value":
-        //},
+        "virtualMachineRG": {
+            "value": ""
+        },
         "osDiskType": {
             "value": "Standard_LRS"
         },
