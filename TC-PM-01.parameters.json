@@ -77,9 +77,9 @@
         "virtualMachineComputerName": {
             "value": "TC-PM-01"
         },
-        "virtualMachineRG": {
-            "value": "The_Taco_King_3"
-        },
+        //"virtualMachineRG": {
+        //    "value":
+        //},
         "osDiskType": {
             "value": "Standard_LRS"
         },
