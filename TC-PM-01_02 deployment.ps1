@@ -31,11 +31,11 @@ function Remove-TC-PM-01_02 {
     [CmdletBinding()]
     param 
     (
-        # Define New Resource Group 1 Name
+        # New Resource Group 1 Name
         [Parameter(Mandatory=$true, Position=0)]
             [string] 
             $AZRG1,
-        # Define New Resource Group 2 Name
+        # New Resource Group 2 Name
         [Parameter(Mandatory=$true, Position=1)]
             [string] 
             $AZRG2            
