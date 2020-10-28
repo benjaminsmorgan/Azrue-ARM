@@ -93,7 +93,7 @@ function Connect-TC-PM-01_02 { # Connects to the 2 VMs using their new IP addres
         mstsc /v:$AZVMIP2 #Starts RDC connection to TC-PM-02
     }
 }
-function Training-Remove-RGs {
+function Training-Remove-RGs { # Removes listed resource groups (Provided the groups are not locked). Used to clean up the training enviornment quickly
     [CmdletBinding()]
     param 
     (
