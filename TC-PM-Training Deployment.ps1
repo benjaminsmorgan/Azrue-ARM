@@ -34,7 +34,7 @@ function Training-Deploy-WinVM #Deploys up to 4 VMs into 4 Azure RGs using templ
             else {
                 New-AzResourceGroup -Name $AZRG1 -Location 'eastus' -Tag $tags #Creation of RG1
                 New-AzResourceGroupDeployment -ResourceGroupName $AZRG1 -TemplateUri $Template -TemplateParameterUri $Param1 #Deployment of TC-PM-01
-                #Write-Host $AZRG1 # This line is used for user input validation for If Else statements. Add # to the 2 line above and remove # from beginning of this line
+                #Write-Host $AZRG1 # This line is used for user input validation testing for If Else statements. Add # to the 2 line above and remove # from beginning of this line
             }
         if (!$AZRG2) {
             Write-Host "No Additional Prarameters Provided, Ending Deployment"
@@ -43,7 +43,7 @@ function Training-Deploy-WinVM #Deploys up to 4 VMs into 4 Azure RGs using templ
             else {
                 New-AzResourceGroup -Name $AZRG2 -Location 'eastus' -Tag $tags #Creation of RG2
                 New-AzResourceGroupDeployment -ResourceGroupName $AZRG2 -TemplateUri $Template -TemplateParameterUri $Param2 #Deployment of TC-PM-02
-                #Write-Host $AZRG2 # This line is used for user input validation for If Else statements. Add # to the 2 line above and remove # from beginning of this line 
+                #Write-Host $AZRG1 # This line is used for user input validation testing for If Else statements. Add # to the 2 line above and remove # from beginning of this line
             }
         if (!$AZRG3) {
             Write-Host "No Additional Prarameters Provided, Ending Deployment"
@@ -52,7 +52,7 @@ function Training-Deploy-WinVM #Deploys up to 4 VMs into 4 Azure RGs using templ
             else {
                 New-AzResourceGroup -Name $AZRG3 -Location 'eastus' -Tag $tags #Creation of RG3
                 New-AzResourceGroupDeployment -ResourceGroupName $AZRG3 -TemplateUri $Template -TemplateParameterUri $Param3 #Deployment of TC-PM-03
-                #Write-Host $AZRG3 # This line is used for user input validation for If Else statements. Add # to the 2 line above and remove # from beginning of this line
+                #Write-Host $AZRG1 # This line is used for user input validation testing for If Else statements. Add # to the 2 line above and remove # from beginning of this line
             }
         if (!$AZRG4) {
             Write-Host "No Additional Prarameters Provided, Ending Deployment"
@@ -61,7 +61,7 @@ function Training-Deploy-WinVM #Deploys up to 4 VMs into 4 Azure RGs using templ
             else {
                 New-AzResourceGroup -Name $AZRG4 -Location 'eastus' -Tag $tags #Creation of RG4
                 New-AzResourceGroupDeployment -ResourceGroupName $AZRG4 -TemplateUri $Template -TemplateParameterUri $Param4 #Deployment of TC-PM-04
-                #Write-Host $AZRG4 # This line is used for user input validation for If Else statements. Add # to the 2 line above and remove # from beginning of this line
+                #Write-Host $AZRG1 # This line is used for user input validation testing for If Else statements. Add # to the 2 line above and remove # from beginning of this line
             }
     }
 }
@@ -112,23 +112,27 @@ function Training-Remove-RGs { # Removes listed resource groups (Provided the gr
     )
     Begin{
         Remove-AzResourceGroup -Name $AZRG1 -force #Removes RG1
+        Write-Host $AZRG1+" has been removed"
         if (!$AZRG2) {
             Break
         }
             else{
                 Remove-AzResourceGroup -Name $AZRG2 -force #Removes RG2
+                Write-Host $AZRG2+" has been removed"
             }
         if (!$AZRG3) {
             Break
         }
             else{
                 Remove-AzResourceGroup -Name $AZRG3 -force #Removes RG3
+                Write-Host $AZRG3+" has been removed"
             }
         if (!$AZRG4) {
             Break
         }
             else{
                 Remove-AzResourceGroup -Name $AZRG4 -force #Removes RG4
+                Write-Host $AZRG4+" has been removed"
             }
     }
 }
