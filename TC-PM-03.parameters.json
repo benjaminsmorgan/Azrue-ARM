@@ -1,0 +1,102 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "networkInterfaceName": {
+            "value": "TP3-NIC"
+        },
+        "networkSecurityGroupName": {
+            "value": "TP3-NSG"
+        },
+        "networkSecurityGroupRules": {
+            "value": [
+                {
+                    "name": "RDP",
+                    "properties": {
+                        "priority": 300,
+                        "protocol": "TCP",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "3389"
+                    }
+                },
+                {
+                    "name": "SSL",
+                    "properties": {
+                        "priority": 200,
+                        "protocol": "TCP",
+                        "access": "Allow",
+                        "direction": "Outbound",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "443"
+                    }
+                }
+            ]
+        },
+        "subnetName": {
+            "value": "TP3-SUB"
+        },
+        "virtualNetworkName": {
+            "value": "TP3-VNET"
+        },
+        "addressPrefixes": {
+            "value": [
+                "10.0.0.0/16"
+            ]
+        },
+        "subnets": {
+            "value": [
+                {
+                    "name": "TP3-SUB",
+                    "properties": {
+                        "addressPrefix": "10.0.0.0/24"
+                    }
+                }
+            ]
+        },
+        "publicIpAddressName": {
+            "value": "TP3-PUBIP"
+        },
+        "publicIpAddressType": {
+            "value": "Dynamic"
+        },
+        "publicIpAddressSku": {
+            "value": "Basic"
+        },
+        "virtualMachineName": {
+            "value": "TC-PM-03"
+        },
+        "virtualMachineComputerName": {
+            "value": "TC-PM-03"
+        },
+        "osDiskType": {
+            "value": "Standard_LRS"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_B2s"
+        },
+        "adminUsername": {
+            "value": "morganbs"
+        },
+        "adminPassword": {
+            "reference": {
+                "keyVault": {
+                "id": "/subscriptions/89c00128-c3f6-4d2b-8409-7d73983eaa4d/resourceGroups/The_Taco_King_2/providers/Microsoft.KeyVault/vaults/morganbskeyvault"
+                },
+                "secretName": "TC-PM-03"
+            }
+        },
+
+        "patchMode": {
+            "value": "AutomaticByOS"
+        }
+    }
+}

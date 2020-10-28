@@ -67,8 +67,8 @@ function Remove-TC-PM-01_02 {
             $AZRG2            
     )
     Begin{
-        Remove-AzResourceGroup -Name $AZRG1 -AsJob #Removes RG1
-        Remove-AzResourceGroup -Name $AZRG2 -AsJob #Removes RG2
+        Remove-AzResourceGroup -Name $AZRG1 -force  #Removes RG1
+        Remove-AzResourceGroup -Name $AZRG2 -force #Removes RG2
     }
 }
         
