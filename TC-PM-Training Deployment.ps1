@@ -122,7 +122,7 @@ function Training-Remove-RGs {
             Break
         }
             else{
-                    Remove-AzResourceGroup -Name $AZRG3 -force #Removes RG3
+                Remove-AzResourceGroup -Name $AZRG3 -force #Removes RG3
             }
         if (!$AZRG4) {
             Break
