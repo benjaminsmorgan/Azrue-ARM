@@ -175,7 +175,7 @@ function Training-Remove-RGs { # Removes listed resource groups (Provided the gr
             }
     }
 }
-function Training-AzureSecretKey {
+function Training-Deploy-SecretKey { # Deploys a new secret and value to listed Azure Keyvault
     [CmdletBinding()]
     param 
     (
@@ -194,3 +194,47 @@ function Training-AzureSecretKey {
         Set-AzKeyVaultSecret -VaultName $AZKV -Name $SecretName -SecretValue $SecretHash
     }
 }        
+function Training-Deploy-ResourceLock {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$true, Position=0)] # This value can only be CanNotDelete or ReadOnly (powershell will parse short versions at the time of this writing C or R)
+            [string] $LockLevel,
+        [Parameter(Mandatory=$true, Position=1)]
+            [string] $AZRG1,
+        [Parameter(Mandatory=$false, Position=2)]
+            [string] $AZRG2,
+        [Parameter(Mandatory=$false, Position=3)]
+            [string] $AZRG3,
+        [Parameter(Mandatory=$false, Position=4)]
+            [string] $AZRG4
+    )
+    Begin 
+    {
+        $AZRG1Name = (Get-AzResourceGroup -Name $AZRG1).ResourceGroupName # Associates user input to a resource group
+        New-AzResourceLock -LockLevel $LockLevel -LockNotes "This a predefined lock for training" -LockName $AZRG1" Lock" -ResourceGroupName $AZRG1Name -Force # Deploys resource lock to resource group
+        if (!$AZRG2) { # Check for additional parameters
+            Write-Host "No Additional Prarameters Provided, Ending Script"
+            Break # Terminates Script
+        }
+            else {
+                $AZRG2Name = (Get-AzResourceGroup -Name $AZRG2).ResourceGroupName # Associates user input to a resource group
+                New-AzResourceLock -LockLevel $LockLevel -LockNotes "This a predefined lock for training" -LockName $AZRG2" Lock" -ResourceGroupName $AZRG2Name -Force # Deploys resource lock to resource group
+            }
+        if (!$AZRG3) { # Check for additional parameters
+            Write-Host "No Additional Prarameters Provided, Ending Script"
+            Break # Terminates Script
+            }
+            else {
+                $AZRG3Name = (Get-AzResourceGroup -Name $AZRG3).ResourceGroupName # Associates user input to a resource group
+                New-AzResourceLock -LockLevel $LockLevel -LockNotes "This a predefined lock for training" -LockName $AZRG3" Lock" -ResourceGroupName $AZRG3Name -Force # Deploys resource lock to resource group
+            }
+        if (!$AZRG4) { # Check for additional parameters
+                Write-Host "No Additional Prarameters Provided, Ending Script"
+                Break # Terminates Script
+            }
+            else {
+                $AZRG4Name = (Get-AzResourceGroup -Name $AZRG4).ResourceGroupName # Associates user input to a resource group
+                New-AzResourceLock -LockLevel $LockLevel -LockNotes "This a predefined lock for training" -LockName $AZRG4" Lock" -ResourceGroupName $AZRG4Name -Force # Deploys resource lock to resource group
+            }  
+    }
+}
