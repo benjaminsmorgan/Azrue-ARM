@@ -29,7 +29,7 @@ function Training-Deploy-WinVM #Deploys up to 4 VMs into 4 Azure RGs using templ
         if (!$AZRG1) { # Checks for first parameter and ends script ff no parameters provided
             Write-Host "Please Provide Upto 4 Resource Group Names for Deployment"
             Write-Host "Example: Deploy-TrainingEn TacoGroup1 TacoGroup2 TacoGroup3 TacoGroup4 "
-            Break
+            Break # Terminates Script
         }       
             else {
                 New-AzResourceGroup -Name $AZRG1 -Location 'eastus' -Tag $tags #Creation of RG1
@@ -65,32 +65,71 @@ function Training-Deploy-WinVM #Deploys up to 4 VMs into 4 Azure RGs using templ
             }
     }
 }
-function Connect-TC-PM-01_02 { # Connects to the 2 VMs using their new IP address, the username spelled out in the related template and the password from the Azure Keyvault
+function Training-connect-RDC { # Connects upto 4 VMs based of resource group name and IP address, the username spelled out in the related template and the password from the Azure Keyvault
     [CmdletBinding()]
     param 
     (
-        # User input of Resource Group 1 Name
+        ## Defines parameters of the function
         [Parameter(Mandatory=$true, Position=0)]
-            [string] 
-            $AZRG1name,
-        # User input of Resource Group 2 Name
-        [Parameter(Mandatory=$true, Position=1)]
-            [string] 
-            $AZRG2name           
+            [string] $AZRG1,
+        [Parameter(Mandatory=$False, Position=1)] # User input of resource group 2 Name
+            [string] $AZRG2,
+        [Parameter(Mandatory=$False, Position=2)] # User input of resource group 3 Name
+            [string] $AZRG3,   
+        [Parameter(Mandatory=$False, Position=3)] # User input of resource group 4 Name
+            [string] $AZRG4
+            ## End of parameters definitions            
     )
     Begin{
-        $AZRG1 = (Get-AzResourceGroup -ResourceGroupName $AZRG1name) # Updates user input to match AZRG to actual RG
-        $AZRG2 = (Get-AzResourceGroup -ResourceGroupName $AZRG2name) # Updates user input to match AZRG to actual RG
-        $AZVMIP1 = (Get-AzPublicIpAddress -ResourceGroupName $AZRG1.ResourceGroupName).IpAddress # Finds and pulls public IP address for server in RG (Only pulls 1 per RG)
-        $AZVMIP2 = (Get-AzPublicIpAddress -ResourceGroupName $AZRG2.ResourceGroupName).IpAddress # Finds and pulls public IP address for server in RG (Only pulls 1 per RG)
+        # First parameter run
+        $AZRG1Name = (Get-AzResourceGroup -ResourceGroupName $AZRG1) # Updates user input to match AZRG to actual RG
+        $AZRG1Secretname = (Get-AzResource -ResourceGroupName $AZRG1 -ResourceType Microsoft.Compute/virtualMachines).Name # Provides the name of the secret within the keyvault (Matched to the VM name)
+        $AZVMPASS1= (Get-AzKeyVaultSecret -VaultName morganbskeyvault -Name $AZRG1Secretname).SecretValueText # Retrieves the secret value text using the name pulled from the VM
+        $AZVMIP1 = (Get-AzPublicIpAddress -ResourceGroupName $AZRG1Name.ResourceGroupName).IpAddress # Gets the public IP address of the VM (only works for a single public ID address with the RG)
         $AZVMUSR1 = $AZVMIP1 + "\morganbs" # Creates variable for local adm account on VM
-        $AZVMUSR2 = $AZVMIP2 + "\morganbs" # Creates variable for local adm account on VM
-        $AZVMPASS1= (Get-AzKeyVaultSecret -VaultName morganbskeyvault -Name "TC-PM-01").SecretValueText # Pulls secret  from Azure vault and assigns to varible
-        $AZVMPASS2= (Get-AzKeyVaultSecret -VaultName morganbskeyvault -Name "TC-PM-02").SecretValueText # Pulls secret  from Azure vault and assigns to varible
         cmdkey /generic:TERMSRV/$AZVMIP1 /user:$AZVMUSR1 /pass:$AZVMPASS1 #assigns variables to RDC session
-        mstsc /v:$AZVMIP1 #Starts RDC connection to TC-PM-01
-        cmdkey /generic:TERMSRV/$AZVMIP2 /user:$AZVMUSR2 /pass:$AZVMPASS2 #assigns variables to RDC session
-        mstsc /v:$AZVMIP2 #Starts RDC connection to TC-PM-02
+        mstsc /v:$AZVMIP1 #Starts RDC connection to first listed server
+        # End first parameter run
+        # Begin additional parameter runs if present
+        if (!$AZRG2) { # Check for additional parameters
+            Write-Host "No Additional Prarameters Provided, Ending Script"
+            Break # Terminates Script
+        }
+            else {
+                $AZRG2Name = (Get-AzResourceGroup -ResourceGroupName $AZRG2) # Updates user input to match AZRG to actual RG
+                $AZRG2Secretname = (Get-AzResource -ResourceGroupName $AZRG2 -ResourceType Microsoft.Compute/virtualMachines).Name # Provides the name of the secret within the keyvault (Matched to the VM name)
+                $AZVMPASS2= (Get-AzKeyVaultSecret -VaultName morganbskeyvault -Name $AZRG2Secretname).SecretValueText # Retrieves the secret value text using the name pulled from the VM
+                $AZVMIP2 = (Get-AzPublicIpAddress -ResourceGroupName $AZRG2Name.ResourceGroupName).IpAddress # Gets the public IP address of the VM (only works for a single public ID address with the RG)
+                $AZVMUSR2 = $AZVMIP2 + "\morganbs" # Creates variable for local adm account on VM
+                cmdkey /generic:TERMSRV/$AZVMIP2 /user:$AZVMUSR2 /pass:$AZVMPASS2 #assigns variables to RDC session
+                mstsc /v:$AZVMIP2 #Starts RDC connection to next listed server
+            }
+        if (!$AZRG3) { # Check for additional parameters
+            Write-Host "No Additional Prarameters Provided, Ending Script"
+            Break # Terminates Script
+            }
+            else {
+                $AZRG3Name = (Get-AzResourceGroup -ResourceGroupName $AZRG3) # Updates user input to match AZRG to actual RG
+                $AZRG3Secretname = (Get-AzResource -ResourceGroupName $AZRG3 -ResourceType Microsoft.Compute/virtualMachines).Name # Provides the name of the secret within the keyvault (Matched to the VM name)
+                $AZVMPASS3= (Get-AzKeyVaultSecret -VaultName morganbskeyvault -Name $AZRG3Secretname).SecretValueText # Retrieves the secret value text using the name pulled from the VM
+                $AZVMIP3 = (Get-AzPublicIpAddress -ResourceGroupName $AZRG3Name.ResourceGroupName).IpAddress # Gets the public IP address of the VM (only works for a single public ID address with the RG)
+                $AZVMUSR3 = $AZVMIP3 + "\morganbs" # Creates variable for local adm account on VM
+                cmdkey /generic:TERMSRV/$AZVMIP3 /user:$AZVMUSR3 /pass:$AZVMPASS3 #assigns variables to RDC session
+                mstsc /v:$AZVMIP3 #Starts RDC connection to next listed server
+            }
+        if (!$AZRG4) { # Check for additional parameters
+                Write-Host "No Additional Prarameters Provided, Ending Script"
+                Break # Terminates Script
+            }
+                else {
+                    $AZRG4Name = (Get-AzResourceGroup -ResourceGroupName $AZRG4) # Updates user input to match AZRG to actual RG
+                    $AZRG4Secretname = (Get-AzResource -ResourceGroupName $AZRG4 -ResourceType Microsoft.Compute/virtualMachines).Name # Provides the name of the secret within the keyvault (Matched to the VM name)
+                    $AZVMPASS4= (Get-AzKeyVaultSecret -VaultName morganbskeyvault -Name $AZRG4Secretname).SecretValueText # Retrieves the secret value text using the name pulled from the VM
+                    $AZVMIP4 = (Get-AzPublicIpAddress -ResourceGroupName $AZRG4Name.ResourceGroupName).IpAddress # Gets the public IP address of the VM (only works for a single public ID address with the RG)
+                    $AZVMUSR4 = $AZVMIP4 + "\morganbs" # Creates variable for local adm account on VM
+                    cmdkey /generic:TERMSRV/$AZVMIP4 /user:$AZVMUSR4 /pass:$AZVMPASS4 #assigns variables to RDC session
+                    mstsc /v:$AZVMIP4 #Starts RDC connection to next listed server
+                }    
     }
 }
 function Training-Remove-RGs { # Removes listed resource groups (Provided the groups are not locked). Used to clean up the training enviornment quickly
@@ -112,27 +151,27 @@ function Training-Remove-RGs { # Removes listed resource groups (Provided the gr
     )
     Begin{
         Remove-AzResourceGroup -Name $AZRG1 -force #Removes RG1
-        Write-Host $AZRG1+" has been removed"
+        Write-Host $AZRG1" has been removed"
         if (!$AZRG2) {
             Break
         }
             else{
                 Remove-AzResourceGroup -Name $AZRG2 -force #Removes RG2
-                Write-Host $AZRG2+" has been removed"
+                Write-Host $AZRG2" has been removed"
             }
         if (!$AZRG3) {
             Break
         }
             else{
                 Remove-AzResourceGroup -Name $AZRG3 -force #Removes RG3
-                Write-Host $AZRG3+" has been removed"
+                Write-Host $AZRG3" has been removed"
             }
         if (!$AZRG4) {
             Break
         }
             else{
                 Remove-AzResourceGroup -Name $AZRG4 -force #Removes RG4
-                Write-Host $AZRG4+" has been removed"
+                Write-Host $AZRG4" has been removed"
             }
     }
 }
