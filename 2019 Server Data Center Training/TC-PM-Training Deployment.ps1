@@ -18,11 +18,11 @@ function Training-Deploy-WinVM { #Deploys up to 4 VMs into 4 Azure RGs using tem
     Begin{
     ## Begin $var creation
         $tags =@{"Type"="Training"} #Tag enforcement policy is set on the subscription, all resource groups require a Tag of "Type"
-        $Template = "https://raw.githubusercontent.com/benjaminsmorgan/Azrue-ARM/main/Server2019template.json" #Template for the deployment of required assets, specfic configurations are loaded in the parameters
-        $Param1 = "https://raw.githubusercontent.com/benjaminsmorgan/Azrue-ARM/main/TC-PM-01.parameters.json" #Parameters for TC-PM-01
-        $Param2 = "https://raw.githubusercontent.com/benjaminsmorgan/Azrue-ARM/main/TC-PM-02.parameters.json" #Parameters for TC-PM-02
-        $Param3 = "https://raw.githubusercontent.com/benjaminsmorgan/Azrue-ARM/main/TC-PM-03.parameters.json" #Parameters for TC-PM-03
-        $Param4 = "https://raw.githubusercontent.com/benjaminsmorgan/Azrue-ARM/main/TC-PM-04.parameters.json" #Parameters for TC-PM-04
+        $Template = "https://raw.githubusercontent.com/benjaminsmorgan/Azrue-ARM/main/2019%20Server%20Data%20Center%20Training/Server2019template.json" #Template for the deployment of required assets, specfic configurations are loaded in the parameters
+        $Param1 = "https://raw.githubusercontent.com/benjaminsmorgan/Azrue-ARM/main/2019%20Server%20Data%20Center%20Training/TC-PM-01.parameters.json" #Parameters for TC-PM-01
+        $Param2 = "https://raw.githubusercontent.com/benjaminsmorgan/Azrue-ARM/main/2019%20Server%20Data%20Center%20Training/TC-PM-02.parameters.json" #Parameters for TC-PM-02
+        $Param3 = "https://raw.githubusercontent.com/benjaminsmorgan/Azrue-ARM/main/2019%20Server%20Data%20Center%20Training/TC-PM-03.parameters.json" #Parameters for TC-PM-03
+        $Param4 = "https://raw.githubusercontent.com/benjaminsmorgan/Azrue-ARM/main/2019%20Server%20Data%20Center%20Training/TC-PM-04.parameters.json" #Parameters for TC-PM-04
     ## End of $var creation
     ## Being resource and resource group deployment
         if (!$AZRG1) { # Checks for first parameter and ends script ff no parameters provided
