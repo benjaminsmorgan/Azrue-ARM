@@ -89,7 +89,7 @@
         "adminPassword": {
             "reference": {
                 "keyVault": {
-                "id": "/subscriptions/89c00128-c3f6-4d2b-8409-7d73983eaa4d/resourceGroups/The_Taco_King_2/providers/Microsoft.KeyVault/vaults/morganbskeyvault"
+                "id": "/subscriptions/89c00128-c3f6-4d2b-8409-7d73983eaa4d/resourceGroups/morganbs-IT-Storage/providers/Microsoft.KeyVault/vaults/morganbskeyvault"
                 },
                 "secretName": "TC-PM-03"
             }
