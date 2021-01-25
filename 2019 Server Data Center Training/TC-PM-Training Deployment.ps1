@@ -31,12 +31,14 @@ function Training-Deploy-WinVM { #Deploys up to 4 VMs into 4 Azure RGs using tem
             Break # Terminates Script
         }       
             else {
+                Set-AzKeyVaultAccessPolicy -VaultName morganbsitvault -EnabledForTemplateDeployment
                 New-AzResourceGroup -Name $AZRG1 -Location 'eastus' -Tag $tags #Creation of RG1
                 New-AzResourceGroupDeployment -ResourceGroupName $AZRG1 -TemplateUri $Template -TemplateParameterUri $Param1 #Deployment of TC-PM-01
                 #Write-Host $AZRG1 # This line is used for user input validation testing for If Else statements. Add # to the 2 line above and remove # from beginning of this line
             }
         if (!$AZRG2) {
             Write-Host "No Additional Parameters Provided, Ending Deployment"
+            Set-AzKeyVaultAccessPolicy -VaultName morganbsitvault -EnabledForTemplateDeployment $false
             Break
         }
             else {
@@ -46,6 +48,7 @@ function Training-Deploy-WinVM { #Deploys up to 4 VMs into 4 Azure RGs using tem
             }
         if (!$AZRG3) {
             Write-Host "No Additional Parameters Provided, Ending Deployment"
+            Set-AzKeyVaultAccessPolicy -VaultName morganbsitvault -EnabledForTemplateDeployment $false
             Break
         }
             else {
@@ -55,6 +58,7 @@ function Training-Deploy-WinVM { #Deploys up to 4 VMs into 4 Azure RGs using tem
             }
         if (!$AZRG4) {
             Write-Host "No Additional Parameters Provided, Ending Deployment"
+            Set-AzKeyVaultAccessPolicy -VaultName morganbsitvault -EnabledForTemplateDeployment $false
             Break
         }
             else {
@@ -210,14 +214,14 @@ function Training-Deploy-ResourceLock {
     Begin 
     {
         $AZRG1Name = (Get-AzResourceGroup -Name $AZRG1).ResourceGroupName # Associates user input to a resource group
-        New-AzResourceLock -LockLevel $LockLevel -LockNotes "This a predefined lock for training" -LockName $AZRG1" Lock" -ResourceGroupName $AZRG1Name -Force # Deploys resource lock to resource group
+        New-AzResourceLock -LockLevel $LockLevel -LockNotes "This is to protect the actual use group" -LockName $AZRG1" Lock" -ResourceGroupName $AZRG1Name -Force # Deploys resource lock to resource group
         if (!$AZRG2) { # Check for additional parameters
             Write-Host "No Additional Parameters Provided, Ending Script"
             Break # Terminates Script
         }
             else {
                 $AZRG2Name = (Get-AzResourceGroup -Name $AZRG2).ResourceGroupName # Associates user input to a resource group
-                New-AzResourceLock -LockLevel $LockLevel -LockNotes "This a predefined lock for training" -LockName $AZRG2" Lock" -ResourceGroupName $AZRG2Name -Force # Deploys resource lock to resource group
+                New-AzResourceLock -LockLevel $LockLevel -LockNotes "This a predefined lock for training" -LockName $AZRG2" Lock3" -ResourceGroupName $AZRG2Name -Force # Deploys resource lock to resource group
             }
         if (!$AZRG3) { # Check for additional parameters
             Write-Host "No Additional Parameters Provided, Ending Script"
